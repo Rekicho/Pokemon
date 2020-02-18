@@ -3,6 +3,8 @@
 
 #include "Pokedex.hpp"
 #include "Pokemon.hpp"
+#include "Map.hpp"
+
 #include <SFML/Graphics.hpp>
 #include <vector>
 
@@ -28,6 +30,7 @@ class Player
     float movingTime = 0;
     const float timePerStep = 0.5;
     const float timeStopped = 0.1;
+    Map map;
 
 public:
     sf::Vector2f getPosition()
@@ -35,7 +38,7 @@ public:
         return position;
     }
 
-    Player(Name name) : name(name), textures{sf::Texture(), sf::Texture(), sf::Texture()}, walkingTextures{sf::Texture(), sf::Texture(), sf::Texture()}, orientation(Orientation::DOWN)
+    Player(Name name, Map map) : name(name), map(map), textures{sf::Texture(), sf::Texture(), sf::Texture()}, walkingTextures{sf::Texture(), sf::Texture(), sf::Texture()}, orientation(Orientation::DOWN)
     {
         sf::Image playerImage;
         playerImage.loadFromFile("../images/people.png");
@@ -128,7 +131,10 @@ public:
             break;
         }
 
-        movingTime = moving ? 0 : movingTime;
+        if(!map.canMove(position.x,position.y,velocity.x,velocity.y))
+            stop();
+
+        else movingTime = moving ? 0 : movingTime;
     }
 
     void move(float x, float y, sf::View &view)

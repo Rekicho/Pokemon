@@ -51,7 +51,7 @@ int main()
     srand(time(NULL));
     load();
 
-    Player player("Red");
+    Player player("Red",Map());
     sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeigth), "Pokemon");
     sf::View view(player.getPosition(), sf::Vector2f(144.f, 144.f));
     sf::Clock deltaClock;
