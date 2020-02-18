@@ -13,19 +13,21 @@ class PokedexEntry
     const ID dex;
     const Name name;
     const PokemonType type;
-    //const Stats baseStats;
+    const Stats baseStats;
     friend class Pokedex;
 
 public:
-    PokedexEntry(ID dex, Name name, PokemonType type) : dex(dex), name(name), type(type) {}
+    PokedexEntry(ID dex, Name name, PokemonType type, Stats baseStats) : dex(dex), name(name), type(type), baseStats(baseStats) {}
+    PokedexEntry(ID dex, Name name, PokemonType type) : dex(dex), name(name), type(type), baseStats(Stats(50, 50, 50, 50, 50)) {}
 };
 
 class Pokedex
 {
+    //TODO: Fill base stats for all pokemon and delete PokedexEntry constructor without base states
     const PokedexEntry pokemon[151] = {
-        PokedexEntry(1, "Bulbasaur", PokemonType(Type::Grass, Type::Poison)),
-        PokedexEntry(2, "Ivysaur", PokemonType(Type::Grass, Type::Poison)),
-        PokedexEntry(3, "Venusaur", PokemonType(Type::Grass, Type::Poison)),
+        PokedexEntry(1, "Bulbasaur", PokemonType(Type::Grass, Type::Poison), Stats(45, 49, 49, 45, 65)),
+        PokedexEntry(2, "Ivysaur", PokemonType(Type::Grass, Type::Poison), Stats(60, 62, 63, 60, 80)),
+        PokedexEntry(3, "Venusaur", PokemonType(Type::Grass, Type::Poison), Stats(45, 49, 49, 45, 65)),
         PokedexEntry(4, "Charmander", PokemonType(Type::Fire)),
         PokedexEntry(5, "Charmeleon", PokemonType(Type::Fire)),
         PokedexEntry(6, "Charizard", PokemonType(Type::Fire, Type::Flying)),
@@ -190,6 +192,11 @@ public:
     Name const getPokemonName(ID dex)
     {
         return pokemon[dex - 1].name;
+    }
+
+    Stats const getPokemonBaseStats(ID dex)
+    {
+        return pokemon[dex - 1].baseStats;
     }
 };
 
