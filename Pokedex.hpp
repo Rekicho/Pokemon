@@ -2,6 +2,7 @@
 #define POKEDEX_HPP
 
 #include "Type.hpp"
+#include "Stats.hpp"
 #include <string>
 
 typedef uint32_t ID;
@@ -12,7 +13,8 @@ class PokedexEntry
     const ID dex;
     const Name name;
     const PokemonType type;
-    friend class Pokedex;    
+    //const Stats baseStats;
+    friend class Pokedex;
 
 public:
     PokedexEntry(ID dex, Name name, PokemonType type) : dex(dex), name(name), type(type) {}
@@ -177,20 +179,20 @@ class Pokedex
     Pokedex();
 
 public:
-    static Pokedex* getInstance()
+    static Pokedex *getInstance()
     {
-        if(instance == nullptr)
+        if (instance == nullptr)
             instance = new Pokedex();
 
         return instance;
     }
 
-    Name const getPokemonName(ID dex) 
+    Name const getPokemonName(ID dex)
     {
-        return pokemon[dex-1].name;
+        return pokemon[dex - 1].name;
     }
 };
 
-Pokedex* Pokedex::instance = nullptr;
+Pokedex *Pokedex::instance = nullptr;
 
 #endif

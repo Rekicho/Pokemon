@@ -50,9 +50,11 @@ int main()
     load();
     sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeigth), "Pokemon");
     Player player("Red");
+    sf::Clock deltaClock;
 
     while (window.isOpen())
     {
+        sf::Time dt = deltaClock.restart();
         sf::Event event;
         while (window.pollEvent(event))
         {
@@ -61,10 +63,13 @@ int main()
             case sf::Event::Closed:
                 window.close();
                 break;
-            case sf::Event::KeyReleased:
+            case sf::Event::KeyPressed:
                 player.handleInput(event.key.code);
+                break;
             }
         }
+
+        player.update(dt);
 
         window.clear(sf::Color::Black);
         draw(window);
