@@ -26,11 +26,16 @@ class Player
     Orientation orientation;
     bool moving = false;
     float movingTime = 0;
-    const float timePerStep = 0.75;
-    const float timeStopped = 0.15;
+    const float timePerStep = 0.5;
+    const float timeStopped = 0.1;
 
 public:
-    Player(Name name) : name(name), textures{sf::Texture(), sf::Texture(), sf::Texture()}, walkingTextures{sf::Texture(), sf::Texture(), sf::Texture()}, orientation(Orientation::UP)
+    sf::Vector2f getPosition()
+    {
+        return position;
+    }
+
+    Player(Name name) : name(name), textures{sf::Texture(), sf::Texture(), sf::Texture()}, walkingTextures{sf::Texture(), sf::Texture(), sf::Texture()}, orientation(Orientation::DOWN)
     {
         sf::Image playerImage;
         playerImage.loadFromFile("../images/people.png");
@@ -44,7 +49,7 @@ public:
         walkingTextures[1].loadFromImage(playerImage, sf::IntRect(38, 288, 16, 16));
         walkingTextures[2].loadFromImage(playerImage, sf::IntRect(54, 288, 16, 16));
 
-        position = sf::Vector2f(8.f, 8.f);
+        position = sf::Vector2f(136.f, 40.f);
         sprite.setOrigin(8.f, 8.f);
     }
 
@@ -126,10 +131,11 @@ public:
         movingTime = moving ? 0 : movingTime;
     }
 
-    void move(float x, float y)
+    void move(float x, float y, sf::View &view)
     {
         position.x += x;
         position.y += y;
+        view.move(x,y);
     }
 
     void stop()
@@ -138,7 +144,7 @@ public:
         moving = false;
     }
 
-    void update(sf::Time time)
+    void update(sf::Time time, sf::View &view)
     {
         if (!moving)
         {
@@ -152,11 +158,11 @@ public:
         movingTime += time.asSeconds();
 
         if (movingTime < timePerStep)
-            move(velocity.x * time.asSeconds(), velocity.y * time.asSeconds());
+            move(velocity.x * time.asSeconds(), velocity.y * time.asSeconds(), view);
 
         else if (movingTime >= timePerStep && moving)
         {
-            move(velocity.x * (timePerStep - oldTime), velocity.y * (timePerStep - oldTime));
+            move(velocity.x * (timePerStep - oldTime), velocity.y * (timePerStep - oldTime), view);
             stop();
         }
     }

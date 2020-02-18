@@ -47,6 +47,14 @@ class PokemonType
 public:
     PokemonType(Type type1, Type type2) : type1(type1), type2(type2) {}
     PokemonType(Type type) : type1(type), type2(Type::Bird) {}
+
+    static double getAttackEffectiveness(Type attackType, PokemonType pokemonType)
+    {
+        if (pokemonType.type2 == Type::Bird)
+            return typeEffectiveness[static_cast<std::underlying_type<Type>::type>(attackType)][static_cast<std::underlying_type<Type>::type>(pokemonType.type1)];
+
+        return typeEffectiveness[static_cast<std::underlying_type<Type>::type>(attackType)][static_cast<std::underlying_type<Type>::type>(pokemonType.type1)] * typeEffectiveness[static_cast<std::underlying_type<Type>::type>(attackType)][static_cast<std::underlying_type<Type>::type>(pokemonType.type2)];
+    }
 };
 
 #endif

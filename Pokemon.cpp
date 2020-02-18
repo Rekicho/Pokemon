@@ -9,13 +9,13 @@
 static const unsigned int windowWidth = 640;
 static const unsigned int windowHeigth = 640;
 
-sf::Texture grassTexture;
-sf::Sprite grassSprite;
+sf::Texture mapTexture;
+sf::Sprite mapSprite;
 
 void load()
 {
-    grassTexture.loadFromFile("../images/grass.png");
-    grassSprite.setTexture(grassTexture);
+    mapTexture.loadFromFile("../images/route1.png", sf::IntRect(8, 24, 288, 576));
+    mapSprite.setTexture(mapTexture);
 }
 
 void randomEncounter()
@@ -34,6 +34,8 @@ void randomEncounter()
 
 void draw(sf::RenderWindow &window)
 {
+    window.draw(mapSprite);
+
     // sf::Vector2u dimensions = grassTexture.getSize();
 
     // for (int j = 0; j <= windowHeigth - dimensions.y; j += dimensions.y)
@@ -48,9 +50,13 @@ int main()
 {
     srand(time(NULL));
     load();
-    sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeigth), "Pokemon");
+
     Player player("Red");
+    sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeigth), "Pokemon");
+    sf::View view(player.getPosition(), sf::Vector2f(144.f, 144.f));
     sf::Clock deltaClock;
+
+    window.setView(view);
 
     while (window.isOpen())
     {
@@ -69,12 +75,13 @@ int main()
             }
         }
 
-        player.update(dt);
+        player.update(dt, view);
 
         window.clear(sf::Color::Black);
         draw(window);
         player.draw(window);
 
+        window.setView(view);
         window.display();
     }
 
